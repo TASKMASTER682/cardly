@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+
+  /* Theme color definitions for dynamic theming */
+  --color-ink: #15141c;
+  --color-ink-soft: #211F2B;
+  --color-ink-line: #3A3745;
+  --color-paper: #E9E4D8;
+  --color-paper-dim: #DAD5C6;
+  --color-brass: #C9962F;
+  --color-brass-soft: #E4B65A;
+  --color-brass-deep: #9C7220;
+  --color-cloud: #F3F1EA;
+  --color-cloud-muted: #A29FB0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-cloud);
+}
+
+/* Visible keyboard focus everywhere — accessibility floor, not decoration. */
+:focus-visible {
+  outline: 2px solid #c9962f;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom range slider styling shared by the customization panel. */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 999px;
+  background: #3a3745;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: #c9962f;
+  cursor: pointer;
+  border: 2px solid #15141c;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: #c9962f;
+  cursor: pointer;
+  border: 2px solid #15141c;
+}
+
+/* Toggle switch focus ring for keyboard navigation */
+.toggle-switch:focus-visible {
+  box-shadow: 0 0 0 2px #15141c, 0 0 0 4px #c9962f;
+}
+
+.card-frame {
+  aspect-ratio: var(--card-ratio, 1);
+}
+
+.card-frame--export {
+  aspect-ratio: auto !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+.card-frame--export .card-scroll {
+  overflow: visible !important;
+}
+
+.card-frame--export .card-frame {
+  aspect-ratio: auto !important;
+  overflow: visible !important;
+}
