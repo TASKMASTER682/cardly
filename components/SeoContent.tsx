@@ -76,6 +76,40 @@ export default function SeoContent() {
 
         <div>
           <h2 className="font-display text-3xl text-cloud mb-6">
+            Convert LinkedIn posts to images, Facebook screenshots and quote cards
+          </h2>
+          <div className="space-y-5 text-cloud-muted leading-relaxed">
+            <p>
+              Cardly is more than a tweet to image converter. Need to convert
+              a LinkedIn post to image for a testimonial wall, an e-book, or
+              a client asset? Paste the text, pick the 16:9 or 2:3 ratio, and
+              export a clean card with the same retina PNG quality. It works
+              just as well as a LinkedIn post to card generator or a LinkedIn
+              post formatter and image maker — no dedicated extension needed.
+            </p>
+            <p>
+              The same editor doubles as a social media post to graphic
+              converter for other platforms. Use it as a Facebook post
+              screenshot generator, or take any plain text and convert text
+              posts to image online — including aesthetic quote cards. Type a
+              line, choose a gradient, and you have a banner for X, a carousel
+              cover for LinkedIn, or a Pinterest pin from one tool.
+            </p>
+          </div>
+          <h3 className="font-display text-xl text-cloud pt-6 mb-3">
+            Convert quotes to beautiful posts, free
+          </h3>
+          <p className="text-cloud-muted leading-relaxed">
+            Creators who want a fast, on-brand quote graphic can convert
+            quotes to beautiful post free by switching to &ldquo;Write
+            text&rdquo;. Because the export is a vector-rendered PNG at 2x
+            resolution, the exact aesthetic you build in the preview is what
+            lands on Instagram, Facebook, LinkedIn, or your blog.
+          </p>
+        </div>
+
+        <div>
+          <h2 className="font-display text-3xl text-cloud mb-6">
             Why creators use Cardly instead of a plain screenshot
           </h2>
           <div className="overflow-hidden rounded-2xl border border-ink-line/60">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Manrope } from "next/font/google";
+import Analytics from "@/components/Analytics";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -19,10 +20,9 @@ const manrope = Manrope({
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cardly.app";
 const SITE_NAME = "Cardly";
-const TITLE =
-  "Tweet to Image Generator — Free X Post & LinkedIn Post Image Maker (No Watermark)";
+const TITLE = "Free Tweet to Image Generator & Social Card Maker — Cardly";
 const DESCRIPTION =
-  "Convert tweet to Instagram post, X post to image converter, or LinkedIn post image maker in seconds. Free tweet to image converter with no watermark, no signup. Beautiful screenshot generator for Twitter.";
+  "Turn any X post into a beautiful image in seconds. Free tweet to image generator with no watermark, custom gradients, and retina PNG export.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -33,16 +33,26 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   keywords: [
     "tweet to image generator",
+    "free tweet to image generator",
     "tweet screenshot generator",
+    "beautiful screenshot generator for twitter",
     "convert tweet to instagram post",
+    "convert tweet to image online free",
     "aesthetic tweet generator",
+    "aesthetic social media post converter",
     "x post to image converter",
     "linkedin post image maker",
+    "convert linkedin post to image",
+    "linkedin post to card generator",
+    "linkedin post formatter and image maker",
+    "aesthetic linkedin post maker",
+    "facebook post screenshot generator",
+    "convert text post to image online",
+    "social media post to graphic converter",
+    "convert quotes to beautiful post free",
     "free tweet to image converter no watermark",
     "convert twitter post to card online free",
-    "beautiful screenshot generator for twitter",
     "tweet to image maker no signup",
-    "aesthetic social media post converter",
   ],
   applicationName: SITE_NAME,
   authors: [{ name: SITE_NAME }],
@@ -51,6 +61,13 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? {
+        verification: {
+          google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+        },
+      }
+    : {}),
   robots: {
     index: true,
     follow: true,
@@ -73,7 +90,7 @@ export const metadata: Metadata = {
         url: "/og-cover.png",
         width: 1200,
         height: 630,
-        alt: "Cardly — Free Tweet to Image Generator, X Post to Image Converter & LinkedIn Post Image Maker",
+        alt: "Cardly — Free tweet to image generator, X post to image converter and social card maker",
       },
     ],
   },
@@ -84,7 +101,7 @@ export const metadata: Metadata = {
     images: ["/og-cover.png"],
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: "/icon.svg",
   },
 };
 
@@ -129,6 +146,20 @@ const webAppJsonLd = {
     price: "0",
     priceCurrency: "USD",
   },
+};
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: `${SITE_URL}/icon.svg`,
+  sameAs: [
+    process.env.NEXT_PUBLIC_TWITTER_URL,
+    process.env.NEXT_PUBLIC_LINKEDIN_URL,
+    process.env.NEXT_PUBLIC_FACEBOOK_URL,
+    process.env.NEXT_PUBLIC_INSTAGRAM_URL,
+  ].filter(Boolean),
 };
 
 const faqJsonLd = {
@@ -206,6 +237,11 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <Analytics />
         {children}
       </body>
     </html>
