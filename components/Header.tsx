@@ -13,7 +13,7 @@ export default function Header() {
           reposting.
         </h1>
         <p className="mt-5 max-w-xl text-cloud-muted text-base sm:text-lg leading-relaxed">
-          Paste an X (Twitter) link or write your own text. Cardly is a tweet
+          Paste an X (Twitter) link or write your own text. Frame Posting is a tweet
           screenshot generator that renders a high-resolution, aesthetic image
           in seconds — perfect for Instagram, LinkedIn, or your blog.
         </p>

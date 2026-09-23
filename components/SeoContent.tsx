@@ -22,14 +22,14 @@ export default function SeoContent() {
               Screenshotting a tweet directly from X keeps the platform&apos;s
               chrome, cramped padding, and inconsistent dark-mode colors —
               none of which look good once you paste them into a blog post,
-              a LinkedIn carousel, or an Instagram grid. Cardly solves that by
+              a LinkedIn carousel, or an Instagram grid. Frame Posting solves that by
               rebuilding the tweet as a clean, resizable layout you fully
               control, then exporting it as a beautiful screenshot generator
               for Twitter at retina resolution.
             </p>
             <p>
               To convert a tweet to an Instagram post, start by pasting the
-              tweet&apos;s URL into the field above. Cardly reads the post&apos;s
+              tweet&apos;s URL into the field above. Frame Posting reads the post&apos;s
               public author, avatar, text and engagement numbers, drops them
               into a live preview, and lets you pick from six aesthetic
               backgrounds — from a warm sunset gradient to a stark
@@ -39,7 +39,7 @@ export default function SeoContent() {
               depth until the card matches your brand.
             </p>
             <p>
-              Need a LinkedIn post image maker? Cardly&apos;s 16:9 aspect ratio
+              Need a LinkedIn post image maker? Frame Posting&apos;s 16:9 aspect ratio
               produces the ideal dimensions for LinkedIn link previews and
               document carousels. The high-resolution 2x export ensures your
               graphics look sharp on every screen — no blurriness, no
@@ -48,7 +48,7 @@ export default function SeoContent() {
             <p>
               Prefer to skip the link entirely? Switch to &ldquo;Write
               text&rdquo; and type your own quote, caption, or announcement.
-              This turns Cardly into a general aesthetic social media post
+              This turns Frame Posting into a general aesthetic social media post
               converter and tweet to image maker with no signup — useful for
               creators who want the aesthetic without needing a live source
               post at all.
@@ -56,7 +56,7 @@ export default function SeoContent() {
             <p>
               Whether you need an X post to image converter for your thread
               highlights, or a free tweet to image converter with no watermark
-              for client work, Cardly handles it all in the browser. Nothing
+              for client work, Frame Posting handles it all in the browser. Nothing
               you type or paste is ever uploaded or stored.
             </p>
             <h3 className="font-display text-xl text-cloud pt-2">
@@ -80,7 +80,7 @@ export default function SeoContent() {
           </h2>
           <div className="space-y-5 text-cloud-muted leading-relaxed">
             <p>
-              Cardly is more than a tweet to image converter. Need to convert
+              Frame Posting is more than a tweet to image converter. Need to convert
               a LinkedIn post to image for a testimonial wall, an e-book, or
               a client asset? Paste the text, pick the 16:9 or 2:3 ratio, and
               export a clean card with the same retina PNG quality. It works
@@ -110,7 +110,7 @@ export default function SeoContent() {
 
         <div>
           <h2 className="font-display text-3xl text-cloud mb-6">
-            Why creators use Cardly instead of a plain screenshot
+            Why creators use Frame Posting instead of a plain screenshot
           </h2>
           <div className="overflow-hidden rounded-2xl border border-ink-line/60">
             <table className="w-full text-left text-sm">
@@ -120,7 +120,7 @@ export default function SeoContent() {
                     Capability
                   </th>
                   <th scope="col" className="px-4 py-3 font-medium text-center">
-                    Cardly
+                    Frame Posting
                   </th>
                   <th scope="col" className="px-4 py-3 font-medium text-center">
                     Native screenshot
@@ -137,11 +137,11 @@ export default function SeoContent() {
                   ["Retina-quality 2x PNG export", true, false],
                   ["Works from plain text with no live tweet", true, false],
                   ["Aesthetic social media post converter — no signup", true, false],
-                ].map(([label, cardly, native]) => (
+                ].map(([label, framePosting, native]) => (
                   <tr key={label as string}>
                     <td className="px-4 py-3 text-cloud">{label as string}</td>
                     <td className="px-4 py-3 text-center">
-                      {cardly ? (
+                      {framePosting ? (
                         <Check size={16} className="inline text-brass-soft" />
                       ) : (
                         <X size={16} className="inline text-cloud-muted" />

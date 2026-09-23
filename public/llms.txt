@@ -1,8 +1,8 @@
-# Cardly
+# Frame Posting
 
 > Free tweet to image generator and social card maker.
 
-Cardly turns X (Twitter) posts and plain text into clean, downloadable social card images directly in the browser.
+Frame Posting turns X (Twitter) posts and plain text into clean, downloadable social card images directly in the browser.
 
 - Convert X (Twitter) posts into clean retina PNG images.
 - Customizable backgrounds, aspect ratios, and padding.

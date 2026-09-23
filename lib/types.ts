@@ -104,7 +104,7 @@ export const DEFAULT_SETTINGS: CardSettings = {
   showMetrics: true,
   showDate: true,
   showBranding: true,
-  brandingText: "Made with Cardly",
+  brandingText: "Made with Frame Posting",
   cardBg: "linear-gradient(135deg, #FF6B35, #F7C948, #FF6B6B)",
   authorNameColor: "",
   authorHandleColor: "",

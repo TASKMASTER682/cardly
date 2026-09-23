@@ -100,7 +100,7 @@ export default function ActionButtons({
     try {
       const dataUrl = await captureCard(cardRef.current);
       const link = document.createElement("a");
-      link.download = `cardly-${Date.now()}.png`;
+      link.download = `frame-posting-${Date.now()}.png`;
       link.href = dataUrl;
       document.body.appendChild(link);
       link.click();

@@ -2,7 +2,6 @@ import Header from "@/components/Header";
 import CardStudio from "@/components/CardStudio";
 import SeoContent from "@/components/SeoContent";
 import FaqAccordion from "@/components/FaqAccordion";
-import Footer from "@/components/Footer";
 
 // Single route: hero + tool in one fold (server-rendered shell), with the
 // interactive editor as a client island and crawlable SEO content below.
@@ -13,7 +12,6 @@ export default function HomePage() {
       <CardStudio />
       <SeoContent />
       <FaqAccordion />
-      <Footer />
     </main>
   );
 }

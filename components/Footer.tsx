@@ -1,3 +1,10 @@
+const PAGE_LINKS = [
+  { href: "/", label: "Tweet to image generator" },
+  { href: "/tweetpik-alternative", label: "Free TweetPik alternative" },
+  { href: "/alternatives", label: "Free tweet-to-image tools" },
+  { href: "/linkedin-post-image-maker", label: "LinkedIn post image maker" },
+];
+
 const SOCIAL_LINKS = [
   process.env.NEXT_PUBLIC_TWITTER_URL && {
     label: "X",
@@ -20,9 +27,19 @@ const SOCIAL_LINKS = [
 export default function Footer() {
   return (
     <footer className="border-t border-ink-line/60">
-      <div className="mx-auto max-w-6xl px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-cloud-muted">
-        <p>&copy; {new Date().getFullYear()} Cardly. Built for creators.</p>
-        <p>Tweet to image generator &middot; No signup &middot; No watermark</p>
+      <div className="mx-auto max-w-6xl px-6 py-8 flex flex-col items-center justify-between gap-4 text-sm text-cloud-muted sm:flex-row">
+        <p>&copy; {new Date().getFullYear()} Frame Posting. Built for creators.</p>
+        <nav aria-label="Footer" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+          {PAGE_LINKS.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="hover:text-brass-soft transition-colors"
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
         {SOCIAL_LINKS.length > 0 && (
           <nav aria-label="Social links" className="flex items-center gap-4">
             {SOCIAL_LINKS.map((social) => (
