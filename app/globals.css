@@ -1,21 +1,48 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Google Fonts self-hosted at build time via next/font/google — zero runtime
+   dependency on fonts.googleapis.com. Fraunces (display serif, variable 100–900,
+   roman + italic — hero uses italic) and Manrope (body sans, variable 200–800)
+   are injected as CSS variables --font-fraunces / --font-manrope on <html>. */
+
+@source "../app";
+@source "../components";
+@source "../lib";
+
+@theme {
+  /* Brand tokens (formerly tailwind.config.ts) */
+  --color-ink: #15141c;
+  --color-ink-soft: #211f2b;
+  --color-ink-line: #3a3745;
+  --color-paper: #e9e4d8;
+  --color-paper-dim: #dad5c6;
+  --color-brass: #c9962f;
+  --color-brass-soft: #e4b65a;
+  --color-brass-deep: #9c7220;
+  --color-cloud: #f3f1ea;
+  --color-cloud-muted: #a29fb0;
+
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+
+  --shadow-easel: 0 40px 80px -30px rgba(0, 0, 0, 0.55);
+
+  --animate-rise: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  @keyframes rise {
+    0% {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
 
 :root {
   color-scheme: dark;
-
-  /* Theme color definitions for dynamic theming */
-  --color-ink: #15141c;
-  --color-ink-soft: #211F2B;
-  --color-ink-line: #3A3745;
-  --color-paper: #E9E4D8;
-  --color-paper-dim: #DAD5C6;
-  --color-brass: #C9962F;
-  --color-brass-soft: #E4B65A;
-  --color-brass-deep: #9C7220;
-  --color-cloud: #F3F1EA;
-  --color-cloud-muted: #A29FB0;
 }
 
 html {
@@ -27,7 +54,21 @@ body {
   color: var(--color-cloud);
 }
 
-/* Visible keyboard focus everywhere — accessibility floor, not decoration. */
+@layer base {
+  /* Tailwind v4's preflight makes buttons use the default cursor; this app is
+     built around clickable controls, so restore the pointer affordance. */
+  button:not(:disabled),
+  [role="button"]:not(:disabled),
+  [role="switch"]:not(:disabled),
+  [role="tab"]:not(:disabled),
+  summary,
+  select {
+    cursor: pointer;
+  }
+}
+
+/* Visible keyboard focus everywhere — accessibility floor, not decoration.
+   Left unlayered on purpose so it always wins over utility outlines. */
 :focus-visible {
   outline: 2px solid #c9962f;
   outline-offset: 3px;
@@ -81,12 +122,6 @@ input[type="range"]::-moz-range-thumb {
 
 .card-frame {
   aspect-ratio: var(--card-ratio, 1);
-}
-
-.card-frame--export {
-  aspect-ratio: auto !important;
-  height: auto !important;
-  overflow: visible !important;
 }
 
 .card-frame--export .card-scroll {

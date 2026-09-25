@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
+import Link from "next/link";
 import { Check, X } from "lucide-react";
-import CardStudio from "@/components/CardStudio";
+import LazyCardStudio from "@/components/LazyCardStudio";
 import FaqList from "@/components/FaqList";
 import type { FaqItem } from "@/lib/faqs";
+import { OG_IMAGE } from "@/lib/og";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://frameposting.com";
 
@@ -17,6 +19,7 @@ export const metadata: Metadata = {
     title: "Free TweetPik Alternative (No Watermark, No Signup) | Frame Posting",
     description:
       "Looking for a free TweetPik alternative? Frame Posting converts tweets and X posts into high-resolution images with no watermark and no account needed.",
+    images: [OG_IMAGE],
   },
 };
 
@@ -127,29 +130,31 @@ export default function TweetpikAlternativePage() {
           </div>
           <p className="mt-4 text-sm text-cloud-muted">
             Try the free tool yourself below — no signup needed.{" "}
-            <a
+            <Link
               href="/alternatives"
               className="text-brass-soft underline underline-offset-4 hover:text-brass"
             >
               See how Frame Posting compares to more tools
-            </a>
+            </Link>
             .
           </p>
         </div>
       </section>
 
-      <CardStudio />
+      {/* Below-the-fold editor: loaded on approach so the static content above
+          stays the LCP for this landing page. */}
+      <LazyCardStudio />
 
       <FaqList items={FAQ_ITEMS} />
 
       <section className="border-t border-ink-line/60">
         <div className="mx-auto max-w-4xl px-6 py-12 text-center">
-          <a
+          <Link
             href="/"
             className="inline-block rounded-xl bg-brass px-6 py-3 text-sm font-semibold text-ink hover:bg-brass-soft transition-colors"
           >
             Back to the free tweet to image generator
-          </a>
+          </Link>
         </div>
       </section>
 

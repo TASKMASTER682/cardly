@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const PAGE_LINKS = [
   { href: "/", label: "Tweet to image generator" },
   { href: "/tweetpik-alternative", label: "Free TweetPik alternative" },
@@ -31,13 +33,13 @@ export default function Footer() {
         <p>&copy; {new Date().getFullYear()} Frame Posting. Built for creators.</p>
         <nav aria-label="Footer" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
           {PAGE_LINKS.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               className="hover:text-brass-soft transition-colors"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
         {SOCIAL_LINKS.length > 0 && (

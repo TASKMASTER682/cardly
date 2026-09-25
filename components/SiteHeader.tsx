@@ -132,12 +132,12 @@ export default function SiteHeader() {
           <LogoMark />
           Frame Posting
         </Link>
-        <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-cloud-muted">
+        <div className="flex flex-wrap gap-x-3 gap-y-2">
           {PAGE_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="hover:text-brass-soft transition-colors"
+              className="rounded-xl border-2 border-brass px-4 py-2 text-sm font-medium text-brass hover:bg-brass hover:text-ink transition-all duration-200 whitespace-nowrap"
             >
               {link.label}
             </Link>

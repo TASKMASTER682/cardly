@@ -2,10 +2,12 @@
 
 import { CardSettings, CARD_BG_PRESETS, NAME_COLOR_PRESETS, HANDLE_COLOR_PRESETS } from "@/lib/types";
 import { THEMES, ASPECT_RATIOS } from "@/lib/themes";
+import type { Platform } from "./CardStudio";
 
 interface CustomizationPanelProps {
   settings: CardSettings;
   onChange: (patch: Partial<CardSettings>) => void;
+  platform?: Platform;
 }
 
 function ToggleRow({
@@ -50,6 +52,7 @@ function ToggleRow({
 export default function CustomizationPanel({
   settings,
   onChange,
+  platform = "twitter",
 }: CustomizationPanelProps) {
   return (
     <section aria-labelledby="customize-heading" className="space-y-6">
@@ -66,15 +69,44 @@ export default function CustomizationPanel({
           {THEMES.map((theme) => (
             <button
               key={theme.id}
-              onClick={() => onChange({ themeId: theme.id })}
+              onClick={() =>
+                onChange(
+                  theme.suggestedBg
+                    ? { themeId: theme.id, cardBg: theme.suggestedBg }
+                    : { themeId: theme.id }
+                )
+              }
               aria-pressed={settings.themeId === theme.id}
               aria-label={theme.label}
-              className={`h-14 rounded-lg ${theme.background} border-2 transition-all ${
+              className={`group flex flex-col items-center gap-1.5 rounded-lg transition-all ${
                 settings.themeId === theme.id
-                  ? "border-brass scale-[1.03]"
-                  : "border-transparent opacity-80 hover:opacity-100"
+                  ? "scale-[1.03]"
+                  : "opacity-80 hover:opacity-100"
               }`}
-            />
+            >
+              <span
+                className={`block h-14 w-full rounded-lg border-2 transition-colors ${
+                  theme.background
+                } ${
+                  settings.themeId === theme.id
+                    ? "border-brass"
+                    : "border-transparent"
+                }`}
+                style={{
+                  ...(theme.swatchBackground ? { background: theme.swatchBackground } : {}),
+                  ...(theme.swatchShadow ? { boxShadow: theme.swatchShadow } : {}),
+                }}
+              />
+              <span
+                className={`w-full truncate text-center text-[10px] leading-tight ${
+                  settings.themeId === theme.id
+                    ? "font-semibold text-brass"
+                    : "text-cloud-muted"
+                }`}
+              >
+                {theme.label}
+              </span>
+            </button>
           ))}
         </div>
       </div>
@@ -193,6 +225,93 @@ export default function CustomizationPanel({
         </div>
       </div>
 
+      {/* Image */}
+      <div className="rounded-xl border border-ink-line/60 px-4 py-3 space-y-3">
+        <ToggleRow
+          label="Show image"
+          checked={settings.showImage}
+          onChange={(v) => onChange({ showImage: v })}
+        />
+        {settings.showImage && (
+          <div className="space-y-3">
+            <input
+              type="url"
+              value={settings.imageUrl}
+              onChange={(e) => onChange({ imageUrl: e.target.value })}
+              placeholder="https://example.com/image.jpg"
+              className="w-full rounded-lg border border-ink-line/60 bg-ink-soft px-3 py-2 text-sm text-cloud outline-none placeholder:text-cloud-muted focus:border-brass"
+            />
+            <label
+              className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-ink-line/60 bg-ink-soft px-3 py-2 text-sm text-cloud hover:border-brass transition-colors"
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => {
+                e.preventDefault();
+                const file = e.dataTransfer.files?.[0];
+                if (!file || !file.type.startsWith("image/")) return;
+                const reader = new FileReader();
+                reader.onloadend = () => onChange({ imageUrl: reader.result as string });
+                reader.readAsDataURL(file);
+              }}
+            >
+              <input
+                type="file"
+                accept="image/*"
+                className="sr-only"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const reader = new FileReader();
+                  reader.onloadend = () => onChange({ imageUrl: reader.result as string });
+                  reader.readAsDataURL(file);
+                }}
+                aria-label="Upload image"
+              />
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="17 8 12 3 7 8" />
+                <line x1="12" y1="3" x2="12" y2="15" />
+              </svg>
+              Upload image — or paste a URL above
+            </label>
+          </div>
+        )}
+      </div>
+
+      {platform === "linkedin" && (
+        <div>
+          <div className="flex items-center justify-between text-xs text-cloud-muted mb-1">
+            <span>Content preview</span>
+            <span>
+              {settings.truncateLength >= 100
+                ? "Full content"
+                : `${settings.truncateLength}%`}
+            </span>
+          </div>
+          <input
+            type="range"
+            min={10}
+            max={100}
+            step={5}
+            value={settings.truncateLength}
+            onChange={(e) => onChange({ truncateLength: Number(e.target.value) })}
+            className="w-full"
+            aria-label="Content preview length"
+          />
+          <p className="mt-1 text-xs text-cloud-muted/70">
+            Lower values cut the post early, ending with dots.
+          </p>
+        </div>
+      )}
+
       {/* Aspect ratio */}
       <div>
         <label htmlFor="aspect-ratio" className="mb-2 block text-xs font-medium uppercase tracking-wide text-cloud-muted">
@@ -214,6 +333,21 @@ export default function CustomizationPanel({
 
       {/* Sliders */}
       <div className="space-y-4">
+        <div>
+          <div className="flex justify-between text-xs text-cloud-muted mb-1">
+            <span>Text size</span>
+            <span>{settings.fontSize}px</span>
+          </div>
+          <input
+            type="range"
+            min={14}
+            max={36}
+            value={settings.fontSize}
+            onChange={(e) => onChange({ fontSize: Number(e.target.value) })}
+            className="w-full"
+            aria-label="Text size"
+          />
+        </div>
         <div>
           <div className="flex justify-between text-xs text-cloud-muted mb-1">
             <span>Rounded corners</span>
@@ -251,6 +385,11 @@ export default function CustomizationPanel({
         <ToggleRow label="Show avatar" checked={settings.showAvatar} onChange={(v) => onChange({ showAvatar: v })} />
         <ToggleRow label="Show likes & reposts" checked={settings.showMetrics} onChange={(v) => onChange({ showMetrics: v })} />
         <ToggleRow label="Show date" checked={settings.showDate} onChange={(v) => onChange({ showDate: v })} />
+        <ToggleRow
+          label={platform === "linkedin" ? "Show LinkedIn logo" : "Show Twitter/X logo"}
+          checked={settings.showLogo}
+          onChange={(v) => onChange({ showLogo: v })}
+        />
         <ToggleRow label={`Show "${settings.brandingText}"`} checked={settings.showBranding} onChange={(v) => onChange({ showBranding: v })} />
       </div>
     </section>

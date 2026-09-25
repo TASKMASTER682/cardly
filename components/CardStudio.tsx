@@ -5,7 +5,7 @@ import InputSection from "./InputSection";
 import CustomizationPanel from "./CustomizationPanel";
 import PreviewCard from "./PreviewCard";
 import ActionButtons from "./ActionButtons";
-import { fetchTweetFromUrl, ApiError } from "@/lib/api";
+import { fetchTweetFromUrl, fetchLinkedInFromUrl, ApiError } from "@/lib/api";
 import { getAspectRatio } from "@/lib/themes";
 import {
   CardSettings,
@@ -15,9 +15,15 @@ import {
   TweetData,
 } from "@/lib/types";
 
+export type Platform = "twitter" | "linkedin";
+
+interface CardStudioProps {
+  platform?: Platform;
+}
+
 // Top-level client component: owns all editor state and wires the
 // input, customization panel, live preview, and export actions together.
-export default function CardStudio() {
+export default function CardStudio({ platform = "twitter" }: CardStudioProps) {
   const [sourceType, setSourceType] = useState<CardSourceType>("custom_text");
   const [urlValue, setUrlValue] = useState("");
   const [textValue, setTextValue] = useState(DEFAULT_TWEET.body);
@@ -27,6 +33,12 @@ export default function CardStudio() {
   const [error, setError] = useState<string | null>(null);
 
   const cardRef = useRef<HTMLDivElement>(null);
+
+  // Constant-area frame sizing: landscape ratios get more width (fewer text
+  // lines), portrait ratios get less (more lines) — so the same content
+  // reflows the way people expect when they switch aspect ratios.
+  const ratio = getAspectRatio(settings.aspectRatio).ratio;
+  const frameWidth = Math.round(Math.sqrt(540 * 540 * ratio));
 
   const handleSourceTypeChange = (type: CardSourceType) => {
     setSourceType(type);
@@ -43,13 +55,23 @@ export default function CardStudio() {
     setIsLoading(true);
     setError(null);
     try {
-      const data = await fetchTweetFromUrl(urlValue.trim());
+      const data =
+        platform === "linkedin"
+          ? await fetchLinkedInFromUrl(urlValue.trim())
+          : await fetchTweetFromUrl(urlValue.trim());
       setTweet(data);
+      if (platform === "linkedin" && data.mediaUrl) {
+        setSettings((prev) => ({
+          ...prev,
+          showImage: true,
+          imageUrl: data.mediaUrl ?? "",
+        }));
+      }
     } catch (err) {
       setError(
         err instanceof ApiError
           ? err.message
-          : "Something went wrong fetching that tweet."
+          : "Something went wrong fetching that post."
       );
     } finally {
       setIsLoading(false);
@@ -69,6 +91,7 @@ export default function CardStudio() {
         {/* Editor rail */}
         <div className="space-y-8 animate-rise order-2 lg:order-1">
           <InputSection
+            platform={platform}
             sourceType={sourceType}
             onSourceTypeChange={handleSourceTypeChange}
             urlValue={urlValue}
@@ -79,23 +102,29 @@ export default function CardStudio() {
             isLoading={isLoading}
             error={error}
           />
-          <CustomizationPanel settings={settings} onChange={handleSettingsChange} />
+          <CustomizationPanel settings={settings} onChange={handleSettingsChange} platform={platform} />
         </div>
 
-        {/* Easel / live preview */}
-        <div className="flex flex-col items-center gap-6 order-1 lg:order-2">
-          <div
-            ref={cardRef}
-            className="card-frame flex w-full items-center justify-center rounded-[28px] p-6 sm:p-16"
-            style={{
-              background: settings.cardBg,
-              "--card-ratio": getAspectRatio(settings.aspectRatio).ratio,
-              maxWidth: "540px",
-            } as CSSProperties}
-          >
-            <PreviewCard tweet={tweet} settings={settings} />
+        {/* Easel / live preview — the card always renders at its TRUE design
+             pixel size (same as the export), so what you see is exactly
+             what downloads. If the screen is too narrow the zone scrolls
+             horizontally instead of breaking the page. */}
+        <div className="order-1 flex flex-col items-center gap-6 lg:order-2">
+          <div className="w-full max-w-full overflow-x-auto">
+            <div
+              ref={cardRef}
+              className="mx-auto flex w-full flex-col items-stretch rounded-[28px] p-6 sm:p-12"
+              style={{
+                background: settings.cardBg,
+                "--card-ratio": ratio,
+                width: frameWidth,
+                minHeight: frameWidth / ratio,
+              } as CSSProperties}
+            >
+              <PreviewCard tweet={tweet} settings={settings} platform={platform} />
+            </div>
           </div>
-          <div className="w-full max-w-[440px]">
+          <div className="mx-auto w-full max-w-[440px] shrink-0">
             <ActionButtons
               cardRef={cardRef}
               cardType={sourceType}

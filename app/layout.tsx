@@ -1,25 +1,10 @@
 import type { Metadata } from "next";
-import { Fraunces, Manrope } from "next/font/google";
 import Analytics from "@/components/Analytics";
 import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 import { FAQS } from "@/lib/faqs";
+import { fraunces, manrope } from "./fonts";
 import "./globals.css";
-
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  variable: "--font-fraunces",
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
-  display: "swap",
-});
-
-const manrope = Manrope({
-  subsets: ["latin"],
-  variable: "--font-manrope",
-  weight: ["400", "500", "600", "700", "800"],
-  display: "swap",
-});
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://frameposting.com";
 const SITE_NAME = "Frame Posting";
@@ -71,9 +56,8 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
   },
-  icons: {
-    icon: "/icon.svg",
-  },
+  // Icons come from the file conventions in `app/` (app/favicon.ico, app/icon.svg)
+  // so no explicit `icons` entry is needed.
 };
 
 const softwareAppJsonLd = {
@@ -147,7 +131,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${manrope.variable}`}>
+    <html lang="en" className={`${fraunces.variable} ${manrope.variable}`} data-scroll-behavior="smooth">
       <body className="font-sans antialiased bg-ink text-cloud">
         <script
           type="application/ld+json"

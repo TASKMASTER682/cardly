@@ -26,6 +26,27 @@ export async function fetchTweetFromUrl(url: string): Promise<TweetData> {
 }
 
 /**
+ * Resolves a LinkedIn post URL into card-ready data via our backend, which
+ * proxies LinkedIn's public embed endpoint (avoiding CORS + hiding logic).
+ */
+export async function fetchLinkedInFromUrl(url: string): Promise<TweetData> {
+  const res = await fetch(`${API_BASE}/api/fetch-linkedin-post`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ url }),
+  });
+
+  if (!res.ok) {
+    const payload = await res.json().catch(() => ({}));
+    throw new ApiError(
+      payload?.message ?? "Could not fetch that LinkedIn post. Check the URL and try again."
+    );
+  }
+
+  return res.json();
+}
+
+/**
  * Fire-and-forget analytics ping. Never blocks or throws into the UI —
  * a failed analytics call should never stop someone from downloading their card.
  */

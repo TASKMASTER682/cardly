@@ -2,8 +2,10 @@
 
 import { Link2, Type, Loader2 } from "lucide-react";
 import { CardSourceType } from "@/lib/types";
+import type { Platform } from "./CardStudio";
 
 interface InputSectionProps {
+  platform?: Platform;
   sourceType: CardSourceType;
   onSourceTypeChange: (type: CardSourceType) => void;
   urlValue: string;
@@ -16,6 +18,7 @@ interface InputSectionProps {
 }
 
 export default function InputSection({
+  platform = "twitter",
   sourceType,
   onSourceTypeChange,
   urlValue,
@@ -26,6 +29,7 @@ export default function InputSection({
   isLoading,
   error,
 }: InputSectionProps) {
+  const isLinkedIn = platform === "linkedin";
   return (
     <section aria-labelledby="input-heading" className="space-y-4">
       <h2 id="input-heading" className="font-display text-xl text-cloud">
@@ -47,7 +51,7 @@ export default function InputSection({
               : "text-cloud-muted hover:text-cloud"
           }`}
         >
-          <Link2 size={14} /> Tweet URL
+          <Link2 size={14} /> {isLinkedIn ? "LinkedIn URL" : "Tweet URL"}
         </button>
         <button
           role="tab"
@@ -69,11 +73,15 @@ export default function InputSection({
             <input
               type="url"
               inputMode="url"
-              placeholder="https://x.com/username/status/1234567890"
+              placeholder={
+                isLinkedIn
+                  ? "https://www.linkedin.com/posts/author_post-activity-1234567890-AbCd"
+                  : "https://x.com/username/status/1234567890"
+              }
               value={urlValue}
               onChange={(e) => onUrlChange(e.target.value)}
               className="flex-1 rounded-xl bg-ink-soft border border-ink-line/60 px-4 py-2.5 text-sm text-cloud placeholder:text-cloud-muted/70 focus:border-brass outline-none"
-              aria-label="Twitter or X post URL"
+              aria-label={isLinkedIn ? "LinkedIn post URL" : "Twitter or X post URL"}
             />
             <button
               onClick={onFetchUrl}
@@ -94,9 +102,13 @@ export default function InputSection({
         <textarea
           value={textValue}
           onChange={(e) => onTextChange(e.target.value)}
-          maxLength={280}
+          maxLength={isLinkedIn ? 3000 : 280}
           rows={4}
-          placeholder="Write the words you want on your card..."
+          placeholder={
+            isLinkedIn
+              ? "Write the LinkedIn post text for your card..."
+              : "Write the words you want on your card..."
+          }
           className="w-full resize-none rounded-xl bg-ink-soft border border-ink-line/60 px-4 py-3 text-sm text-cloud placeholder:text-cloud-muted/70 focus:border-brass outline-none"
           aria-label="Custom card text"
         />

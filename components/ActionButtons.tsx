@@ -7,7 +7,7 @@ import { trackCardEvent } from "@/lib/api";
 import { CardSourceType } from "@/lib/types";
 
 interface ActionButtonsProps {
-  cardRef: RefObject<HTMLDivElement>;
+  cardRef: RefObject<HTMLDivElement | null>;
   cardType: CardSourceType;
   themeUsed: string;
   tweetUrl?: string;
@@ -57,6 +57,34 @@ async function captureCard(node: HTMLDivElement): Promise<string> {
   const hadExportClass = node.classList.contains(EXPORT_CLASS);
   node.classList.add(EXPORT_CLASS);
 
+  // Export exactly the selected aspect ratio. The layout may have been
+  // scaled-down by `max-width: 100%` on small screens, so the size comes
+  // from the inline design width, not the (possibly shrunk) rendered box.
+  const ratio =
+    parseFloat(
+      getComputedStyle(node).getPropertyValue("--card-ratio")
+    ) || 1;
+  const designWidth =
+    parseFloat(node.style.width) || node.offsetWidth || 540;
+  const minHeight = Math.ceil(designWidth / ratio);
+
+  const savedStyles = {
+    width: node.style.width,
+    maxWidth: node.style.maxWidth,
+    height: node.style.height,
+    aspectRatio: node.style.aspectRatio,
+  };
+
+  node.style.width = `${designWidth}px`;
+  node.style.maxWidth = "none";
+  node.style.aspectRatio = "auto";
+  node.style.height = "auto";
+  // The min-height (aspect ratio) stays in place, so the exported height is
+  // the natural height: at least the selected ratio, taller if content needs.
+  const naturalHeight = Math.ceil(node.offsetHeight);
+  const exportHeight = Math.max(minHeight, naturalHeight);
+  node.style.height = `${exportHeight}px`;
+
   try {
     return await toPng(node, {
       quality: 1,
@@ -76,6 +104,10 @@ async function captureCard(node: HTMLDivElement): Promise<string> {
     if (!hadExportClass) {
       node.classList.remove(EXPORT_CLASS);
     }
+    node.style.width = savedStyles.width;
+    node.style.maxWidth = savedStyles.maxWidth;
+    node.style.height = savedStyles.height;
+    node.style.aspectRatio = savedStyles.aspectRatio;
     for (const { img, src } of originals) {
       img.src = src;
     }

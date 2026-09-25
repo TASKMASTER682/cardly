@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
-
+// Generated on the Node.js runtime and prerendered at build time — no edge
+// runtime needed, so the OG image ships as a static, cacheable asset.
 export const alt =
   "Frame Posting — free tweet to image generator, X post to image converter and social card maker";
 
