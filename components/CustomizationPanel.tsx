@@ -31,17 +31,17 @@ function ToggleRow({
           onChange(!checked);
         }
       }}
-      className="flex items-center justify-between py-2 text-sm text-cloud cursor-pointer select-none"
+      className="flex items-center justify-between py-3 sm:py-2 text-sm sm:text-base text-cloud cursor-pointer select-none min-h-[48px]"
     >
-      <span>{label}</span>
+      <span className="pr-3">{label}</span>
       <div
-        className={`toggle-switch pointer-events-none relative h-[22px] w-10 rounded-full transition-colors ${
+        className={`toggle-switch pointer-events-none relative h-[26px] w-12 sm:h-[22px] sm:w-10 rounded-full transition-colors flex-shrink-0 ${
           checked ? "bg-brass" : "bg-ink-line"
         }`}
       >
         <span
-          className={`absolute top-[3px] h-4 w-4 rounded-full bg-cloud shadow-sm transition-transform ${
-            checked ? "translate-x-[18px]" : "translate-x-[3px]"
+          className={`absolute top-[3px] left-[3px] h-5 w-5 sm:h-4 sm:w-4 rounded-full bg-cloud shadow-sm transition-transform ${
+            checked ? "translate-x-[20px] sm:translate-x-[18px]" : "translate-x-0"
           }`}
         />
       </div>
@@ -65,7 +65,7 @@ export default function CustomizationPanel({
         <p className="mb-2 text-xs font-medium uppercase tracking-wide text-cloud-muted">
           Background
         </p>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
           {THEMES.map((theme) => (
             <button
               key={theme.id}
@@ -78,14 +78,14 @@ export default function CustomizationPanel({
               }
               aria-pressed={settings.themeId === theme.id}
               aria-label={theme.label}
-              className={`group flex flex-col items-center gap-1.5 rounded-lg transition-all ${
+              className={`group flex flex-col items-center gap-1.5 rounded-lg transition-all min-h-[80px] ${
                 settings.themeId === theme.id
                   ? "scale-[1.03]"
                   : "opacity-80 hover:opacity-100"
               }`}
             >
               <span
-                className={`block h-14 w-full rounded-lg border-2 transition-colors ${
+                className={`block h-14 sm:h-16 w-full rounded-lg border-2 transition-colors ${
                   theme.background
                 } ${
                   settings.themeId === theme.id
@@ -98,7 +98,7 @@ export default function CustomizationPanel({
                 }}
               />
               <span
-                className={`w-full truncate text-center text-[10px] leading-tight ${
+                className={`w-full truncate text-center text-[10px] sm:text-xs leading-tight ${
                   settings.themeId === theme.id
                     ? "font-semibold text-brass"
                     : "text-cloud-muted"
@@ -116,14 +116,14 @@ export default function CustomizationPanel({
         <p className="mb-2 text-xs font-medium uppercase tracking-wide text-cloud-muted">
           Card Background
         </p>
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 min-w-0">
           {CARD_BG_PRESETS.map((preset) => (
             <button
               key={preset.value}
               onClick={() => onChange({ cardBg: preset.value })}
               title={preset.label}
               aria-label={`Background: ${preset.label}`}
-              className={`h-8 w-8 rounded-lg border-2 transition-all ${
+              className={`h-10 w-10 sm:h-8 sm:w-8 rounded-lg border-2 transition-all ${
                 settings.cardBg === preset.value
                   ? "border-brass scale-110"
                   : "border-ink-line/60 hover:border-cloud-muted"
@@ -135,7 +135,7 @@ export default function CustomizationPanel({
               }}
             />
           ))}
-          <label className="relative h-8 w-8 cursor-pointer rounded-lg border-2 border-ink-line/60 transition-all hover:border-cloud-muted has-[:checked]:border-brass has-[:checked]:scale-110">
+          <label className="relative h-10 w-10 sm:h-8 sm:w-8 cursor-pointer rounded-lg border-2 border-ink-line/60 transition-all hover:border-cloud-muted has-[:checked]:border-brass has-[:checked]:scale-110">
             <input
               type="color"
               value={settings.cardBg === "transparent" ? "#E9E4D8" : settings.cardBg}
@@ -156,14 +156,14 @@ export default function CustomizationPanel({
           <p className="mb-2 text-xs font-medium uppercase tracking-wide text-cloud-muted">
             Name color
           </p>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 min-w-0">
             {NAME_COLOR_PRESETS.map((preset) => (
               <button
                 key={preset.value || "theme"}
                 onClick={() => onChange({ authorNameColor: preset.value })}
                 title={preset.label}
                 aria-label={`Name color: ${preset.label}`}
-                className={`h-7 w-7 rounded-full border-2 transition-all ${
+                className={`h-9 w-9 sm:h-7 sm:w-7 rounded-full border-2 transition-all ${
                   settings.authorNameColor === preset.value
                     ? "border-brass scale-110"
                     : "border-ink-line/60 hover:border-cloud-muted"
@@ -173,7 +173,7 @@ export default function CustomizationPanel({
                 }}
               />
             ))}
-            <label className="relative h-7 w-7 cursor-pointer rounded-full border-2 border-ink-line/60 transition-all hover:border-cloud-muted has-[:checked]:border-brass has-[:checked]:scale-110">
+            <label className="relative h-9 w-9 sm:h-7 sm:w-7 cursor-pointer rounded-full border-2 border-ink-line/60 transition-all hover:border-cloud-muted has-[:checked]:border-brass has-[:checked]:scale-110">
               <input
                 type="color"
                 value={settings.authorNameColor || "#FFFFFF"}
@@ -192,14 +192,14 @@ export default function CustomizationPanel({
           <p className="mb-2 text-xs font-medium uppercase tracking-wide text-cloud-muted">
             Handle color
           </p>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 min-w-0">
             {HANDLE_COLOR_PRESETS.map((preset) => (
               <button
                 key={preset.value || "theme"}
                 onClick={() => onChange({ authorHandleColor: preset.value })}
                 title={preset.label}
                 aria-label={`Handle color: ${preset.label}`}
-                className={`h-7 w-7 rounded-full border-2 transition-all ${
+                className={`h-9 w-9 sm:h-7 sm:w-7 rounded-full border-2 transition-all ${
                   settings.authorHandleColor === preset.value
                     ? "border-brass scale-110"
                     : "border-ink-line/60 hover:border-cloud-muted"
@@ -209,7 +209,7 @@ export default function CustomizationPanel({
                 }}
               />
             ))}
-            <label className="relative h-7 w-7 cursor-pointer rounded-full border-2 border-ink-line/60 transition-all hover:border-cloud-muted has-[:checked]:border-brass has-[:checked]:scale-110">
+            <label className="relative h-9 w-9 sm:h-7 sm:w-7 cursor-pointer rounded-full border-2 border-ink-line/60 transition-all hover:border-cloud-muted has-[:checked]:border-brass has-[:checked]:scale-110">
               <input
                 type="color"
                 value={settings.authorHandleColor || "#A29FB0"}
@@ -239,10 +239,10 @@ export default function CustomizationPanel({
               value={settings.imageUrl}
               onChange={(e) => onChange({ imageUrl: e.target.value })}
               placeholder="https://example.com/image.jpg"
-              className="w-full rounded-lg border border-ink-line/60 bg-ink-soft px-3 py-2 text-sm text-cloud outline-none placeholder:text-cloud-muted focus:border-brass"
+              className="w-full rounded-lg border border-ink-line/60 bg-ink-soft px-3 py-3 text-sm text-cloud outline-none placeholder:text-cloud-muted focus:border-brass min-h-[48px]"
             />
             <label
-              className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-ink-line/60 bg-ink-soft px-3 py-2 text-sm text-cloud hover:border-brass transition-colors"
+              className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-ink-line/60 bg-ink-soft px-3 py-3 text-sm text-cloud hover:border-brass transition-colors min-h-[48px]"
               onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => {
                 e.preventDefault();
@@ -296,16 +296,16 @@ export default function CustomizationPanel({
                 : `${settings.truncateLength}%`}
             </span>
           </div>
-          <input
-            type="range"
-            min={10}
-            max={100}
-            step={5}
-            value={settings.truncateLength}
-            onChange={(e) => onChange({ truncateLength: Number(e.target.value) })}
-            className="w-full"
-            aria-label="Content preview length"
-          />
+<input
+              type="range"
+              min={10}
+              max={100}
+              step={5}
+              value={settings.truncateLength}
+              onChange={(e) => onChange({ truncateLength: Number(e.target.value) })}
+              className="w-full h-8 accent-brass"
+              aria-label="Content preview length"
+            />
           <p className="mt-1 text-xs text-cloud-muted/70">
             Lower values cut the post early, ending with dots.
           </p>
@@ -321,7 +321,7 @@ export default function CustomizationPanel({
           id="aspect-ratio"
           value={settings.aspectRatio}
           onChange={(e) => onChange({ aspectRatio: e.target.value as CardSettings["aspectRatio"] })}
-          className="w-full rounded-lg border border-ink-line/60 bg-ink-soft px-2 py-2 text-sm text-cloud outline-none focus:border-brass"
+          className="w-full rounded-lg border border-ink-line/60 bg-ink-soft px-3 py-3 text-sm text-cloud outline-none focus:border-brass min-h-[48px]"
         >
           {ASPECT_RATIOS.map((r) => (
             <option key={r.id} value={r.id}>
@@ -344,7 +344,7 @@ export default function CustomizationPanel({
             max={36}
             value={settings.fontSize}
             onChange={(e) => onChange({ fontSize: Number(e.target.value) })}
-            className="w-full"
+            className="w-full h-8 accent-brass"
             aria-label="Text size"
           />
         </div>
@@ -359,7 +359,7 @@ export default function CustomizationPanel({
             max={48}
             value={settings.cornerRadius}
             onChange={(e) => onChange({ cornerRadius: Number(e.target.value) })}
-            className="w-full"
+            className="w-full h-8 accent-brass"
             aria-label="Corner radius"
           />
         </div>
@@ -374,7 +374,7 @@ export default function CustomizationPanel({
             max={100}
             value={settings.shadowIntensity}
             onChange={(e) => onChange({ shadowIntensity: Number(e.target.value) })}
-            className="w-full"
+            className="w-full h-8 accent-brass"
             aria-label="Shadow intensity"
           />
         </div>

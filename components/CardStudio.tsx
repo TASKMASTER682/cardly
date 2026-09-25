@@ -87,9 +87,9 @@ export default function CardStudio({ platform = "twitter" }: CardStudioProps) {
       aria-label="Tweet to image editor"
       className="mx-auto max-w-6xl px-6 pb-20 pt-4"
     >
-      <div className="grid gap-10 lg:grid-cols-[minmax(0,380px)_1fr]">
-        {/* Editor rail */}
-        <div className="space-y-8 animate-rise order-2 lg:order-1">
+      <div className="grid gap-6 lg:gap-10 lg:grid-cols-[minmax(0,380px)_1fr] grid-cols-[1fr]">
+        {/* Editor rail — constrained to viewport, never stretched by preview */}
+        <div className="space-y-8 animate-rise order-2 lg:order-1 min-w-0 w-full overflow-x-hidden max-w-screen">
           <InputSection
             platform={platform}
             sourceType={sourceType}

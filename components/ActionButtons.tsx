@@ -64,8 +64,7 @@ async function captureCard(node: HTMLDivElement): Promise<string> {
     parseFloat(
       getComputedStyle(node).getPropertyValue("--card-ratio")
     ) || 1;
-  const designWidth =
-    parseFloat(node.style.width) || node.offsetWidth || 540;
+  const designWidth = Math.round(Math.sqrt(540 * 540 * ratio));
   const minHeight = Math.ceil(designWidth / ratio);
 
   const savedStyles = {

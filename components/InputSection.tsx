@@ -69,7 +69,7 @@ export default function InputSection({
 
       {sourceType === "url" ? (
         <div className="space-y-2">
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <input
               type="url"
               inputMode="url"
@@ -80,13 +80,13 @@ export default function InputSection({
               }
               value={urlValue}
               onChange={(e) => onUrlChange(e.target.value)}
-              className="flex-1 rounded-xl bg-ink-soft border border-ink-line/60 px-4 py-2.5 text-sm text-cloud placeholder:text-cloud-muted/70 focus:border-brass outline-none"
+              className="flex-1 rounded-xl bg-ink-soft border border-ink-line/60 px-4 py-3 text-sm text-cloud placeholder:text-cloud-muted/70 focus:border-brass outline-none"
               aria-label={isLinkedIn ? "LinkedIn post URL" : "Twitter or X post URL"}
             />
             <button
               onClick={onFetchUrl}
               disabled={isLoading || !urlValue.trim()}
-              className="shrink-0 rounded-xl bg-brass px-4 py-2.5 text-sm font-semibold text-ink disabled:opacity-40 hover:bg-brass-soft transition-colors flex items-center gap-2"
+              className="shrink-0 rounded-xl bg-brass px-4 py-3 text-sm font-semibold text-ink disabled:opacity-40 hover:bg-brass-soft transition-colors flex items-center gap-2 w-full sm:w-auto"
             >
               {isLoading && <Loader2 size={14} className="animate-spin" />}
               {isLoading ? "Fetching" : "Fetch"}
@@ -103,13 +103,13 @@ export default function InputSection({
           value={textValue}
           onChange={(e) => onTextChange(e.target.value)}
           maxLength={isLinkedIn ? 3000 : 280}
-          rows={4}
+          rows={5}
           placeholder={
             isLinkedIn
               ? "Write the LinkedIn post text for your card..."
               : "Write the words you want on your card..."
           }
-          className="w-full resize-none rounded-xl bg-ink-soft border border-ink-line/60 px-4 py-3 text-sm text-cloud placeholder:text-cloud-muted/70 focus:border-brass outline-none"
+          className="w-full resize-y min-h-[120px] rounded-xl bg-ink-soft border border-ink-line/60 px-4 py-3 text-sm text-cloud placeholder:text-cloud-muted/70 focus:border-brass outline-none"
           aria-label="Custom card text"
         />
       )}
