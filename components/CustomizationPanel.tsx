@@ -62,10 +62,10 @@ export default function CustomizationPanel({
 
       {/* Theme swatches */}
       <div>
-        <p className="mb-2 text-xs font-medium uppercase tracking-wide text-cloud-muted">
-          Background
+<p className="mb-2 text-xs font-medium uppercase tracking-wide text-cloud-muted">
+          Themes
         </p>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 min-w-0">
           {THEMES.map((theme) => (
             <button
               key={theme.id}
@@ -286,8 +286,7 @@ export default function CustomizationPanel({
         )}
       </div>
 
-      {platform === "linkedin" && (
-        <div>
+<div>
           <div className="flex items-center justify-between text-xs text-cloud-muted mb-1">
             <span>Content preview</span>
             <span>
@@ -296,21 +295,20 @@ export default function CustomizationPanel({
                 : `${settings.truncateLength}%`}
             </span>
           </div>
-<input
-              type="range"
-              min={10}
-              max={100}
-              step={5}
-              value={settings.truncateLength}
-              onChange={(e) => onChange({ truncateLength: Number(e.target.value) })}
-              className="w-full h-8 accent-brass"
-              aria-label="Content preview length"
-            />
+          <input
+            type="range"
+            min={10}
+            max={100}
+            step={5}
+            value={settings.truncateLength}
+            onChange={(e) => onChange({ truncateLength: Number(e.target.value) })}
+            className="w-full h-8 accent-brass"
+            aria-label="Content preview length"
+          />
           <p className="mt-1 text-xs text-cloud-muted/70">
             Lower values cut the post early, ending with dots.
           </p>
         </div>
-      )}
 
       {/* Aspect ratio */}
       <div>

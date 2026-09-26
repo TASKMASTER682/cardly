@@ -2,6 +2,7 @@ import Link from "next/link";
 
 const PAGE_LINKS = [
   { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
   { href: "/tweetpik-alternative", label: "TweetPik Alternative" },
   { href: "/alternatives", label: "Alternatives" },
   { href: "/linkedin-post-image-maker", label: "LinkedIn Image Maker" },

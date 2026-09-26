@@ -34,11 +34,12 @@ export default function CardStudio({ platform = "twitter" }: CardStudioProps) {
 
   const cardRef = useRef<HTMLDivElement>(null);
 
-  // Constant-area frame sizing: landscape ratios get more width (fewer text
-  // lines), portrait ratios get less (more lines) — so the same content
-  // reflows the way people expect when they switch aspect ratios.
   const ratio = getAspectRatio(settings.aspectRatio).ratio;
-  const frameWidth = Math.round(Math.sqrt(540 * 540 * ratio));
+
+  const cardShellStyle: CSSProperties = {
+    background: settings.cardBg,
+    "--card-ratio": String(ratio),
+  } as CSSProperties;
 
   const handleSourceTypeChange = (type: CardSourceType) => {
     setSourceType(type);
@@ -105,25 +106,23 @@ export default function CardStudio({ platform = "twitter" }: CardStudioProps) {
           <CustomizationPanel settings={settings} onChange={handleSettingsChange} platform={platform} />
         </div>
 
-        {/* Easel / live preview — the card always renders at its TRUE design
-             pixel size (same as the export), so what you see is exactly
-             what downloads. If the screen is too narrow the zone scrolls
-             horizontally instead of breaking the page. */}
+        {/* Live preview should stay fluid and viewport-safe. The export takes an
+             exact-size snapshot separately, so the desktop preview never needs to
+             force a fixed width that causes crop or overflow. */}
         <div className="order-1 flex flex-col items-center gap-6 lg:order-2">
-          <div className="w-full max-w-full overflow-x-auto">
+          <div className="w-full max-w-full overflow-hidden" style={{ background: settings.cardBg }}>
             <div
               ref={cardRef}
-              className="mx-auto flex w-full flex-col items-stretch rounded-[28px] p-6 sm:p-12"
-              style={{
-                background: settings.cardBg,
-                "--card-ratio": ratio,
-                width: frameWidth,
-                minHeight: frameWidth / ratio,
-              } as CSSProperties}
+              className="card-shell mx-auto flex w-full flex-col items-stretch rounded-[28px] p-6 sm:p-12"
+              style={cardShellStyle}
             >
               <PreviewCard tweet={tweet} settings={settings} platform={platform} />
             </div>
           </div>
+          <p className="block lg:hidden text-center text-xs text-cloud-muted px-4 py-2">
+            This preview is just to see how the theme looks — it is not an aspect ratio preview.
+            The image you download will always be in whichever aspect ratio you have set above.
+          </p>
           <div className="mx-auto w-full max-w-[440px] shrink-0">
             <ActionButtons
               cardRef={cardRef}

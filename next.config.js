@@ -47,12 +47,10 @@ const securityHeaders = [
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "X-Download-Options", value: "noopen" },
   { key: "X-Permitted-Cross-Domain-Policies", value: "none" },
-  // Legacy browsers that do not understand CSP still honor this directive.
   ...(isProduction
     ? [
         { key: "Content-Security-Policy", value: contentSecurityPolicy },
-        // HTTPS-only site: force it for a year, incl. subdomains.
-        { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains" },
+        { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
         { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
         {
           key: "Permissions-Policy",
@@ -69,6 +67,7 @@ const nextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "pbs.twimg.com" },
       { protocol: "https", hostname: "abs.twimg.com" },
+      { protocol: "https", hostname: "api.dicebear.com" },
     ],
   },
   async headers() {

@@ -10,11 +10,11 @@ import { FAQS } from "@/lib/faqs";
 // so every answer ships in the static HTML for crawlers — zero JS required.
 export default function HomePage() {
   return (
-    <main>
+    <>
       <Header />
       <CardStudio />
       <SeoContent />
       <FaqList items={FAQS} />
-    </main>
+    </>
   );
 }

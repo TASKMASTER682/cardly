@@ -67,10 +67,13 @@ export default function PreviewCard({ tweet, settings, platform = "twitter" }: P
   return (
     <div
       id="preview-card"
-      className={`relative flex w-full flex-1 flex-col p-6 ${theme.background} ${theme.cardClass ?? ""}`}
+      className={`preview-card relative flex w-full flex-1 flex-col p-6 ${theme.background} ${theme.cardClass ?? ""}`}
       style={{
-        borderRadius: `${settings.cornerRadius}px`,
-        boxShadow: cardShadow,
+        "--card-border-radius": `${settings.cornerRadius}px`,
+        "--card-shadow": cardShadow,
+        "--author-name-color": settings.authorNameColor ?? "",
+        "--author-handle-color": settings.authorHandleColor ?? "",
+        "--card-font-size": `${settings.fontSize}px`,
       } as CSSProperties}
     >
       <div className="flex w-full flex-1 flex-col">
@@ -92,20 +95,15 @@ export default function PreviewCard({ tweet, settings, platform = "twitter" }: P
                 sizes="44px"
                 className="object-cover"
                 unoptimized
+                priority
               />
             </div>
           )}
           <div className="min-w-0">
-            <p
-              className="truncate font-extrabold leading-tight"
-              style={settings.authorNameColor ? { color: settings.authorNameColor } : undefined}
-            >
+            <p className="preview-author-name truncate font-extrabold leading-tight">
               {tweet.authorName}
             </p>
-            <p
-              className={`truncate text-sm ${!settings.authorHandleColor ? theme.accentClass : ""}`}
-              style={settings.authorHandleColor ? { color: settings.authorHandleColor } : undefined}
-            >
+            <p className={`preview-author-handle truncate text-sm ${!settings.authorHandleColor ? theme.accentClass : ""}`}>
               {tweet.authorHandle}
             </p>
           </div>
@@ -116,21 +114,16 @@ export default function PreviewCard({ tweet, settings, platform = "twitter" }: P
             {/* Deliberately a raw <img>: html-to-image walks the live DOM during
                 export, and next/image's lazy-loading/srcset bookkeeping produces
                 blank or low-res captures. Keep this element as-is. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={settings.imageUrl}
-              alt=""
-              loading="lazy"
-              className={`block max-h-[380px] w-full object-contain ${theme.imageClass ?? "rounded-xl border border-white/20"}`}
-            />
+              <img
+                src={settings.imageUrl}
+                alt=""
+                className={`block max-h-[380px] w-full object-contain ${theme.imageClass ?? "rounded-xl border border-white/20"}`}
+              />
           </div>
         )}
 
         <div className="flex flex-1 flex-col justify-center">
-          <p
-            className={`mt-6 whitespace-pre-wrap font-medium leading-snug ${theme.textClass} ${theme.bodyClass ?? ""}`}
-            style={{ fontSize: `${settings.fontSize}px` }}
-          >
+          <p className={`preview-body-copy mt-6 whitespace-pre-wrap font-medium leading-snug ${theme.textClass} ${theme.bodyClass ?? ""}`}>
             {bodyVisible}
             {bodyTruncated && (
               <span className={`font-bold tracking-[0.2em] ${theme.accentClass}`}>
@@ -143,27 +136,27 @@ export default function PreviewCard({ tweet, settings, platform = "twitter" }: P
 
         {(settings.showDate || settings.showMetrics) && (
           <div className={`flex flex-wrap items-center gap-4 text-sm shrink-0 mt-6 ${theme.accentClass}`}>
-              {settings.showDate && <span className={theme.chipClass}>{formatDate(tweet.createdAt)}</span>}
-              {settings.showMetrics && (
-                <>
+            {settings.showDate && <span className={theme.chipClass}>{formatDate(tweet.createdAt)}</span>}
+            {settings.showMetrics && (
+              <>
+                <span className={`flex items-center gap-1.5 ${theme.chipClass ?? ""}`}>
+                  <Heart size={14} /> {formatCount(tweet.metrics.likes)}
+                </span>
+                <span className={`flex items-center gap-1.5 ${theme.chipClass ?? ""}`}>
+                  <Repeat2 size={14} /> {formatCount(tweet.metrics.reposts)}
+                </span>
+                {typeof tweet.metrics.replies === "number" && (
                   <span className={`flex items-center gap-1.5 ${theme.chipClass ?? ""}`}>
-                    <Heart size={14} /> {formatCount(tweet.metrics.likes)}
+                    <MessageCircle size={14} /> {formatCount(tweet.metrics.replies)}
                   </span>
-                  <span className={`flex items-center gap-1.5 ${theme.chipClass ?? ""}`}>
-                    <Repeat2 size={14} /> {formatCount(tweet.metrics.reposts)}
-                  </span>
-                  {typeof tweet.metrics.replies === "number" && (
-                    <span className={`flex items-center gap-1.5 ${theme.chipClass ?? ""}`}>
-                      <MessageCircle size={14} /> {formatCount(tweet.metrics.replies)}
-                    </span>
-                  )}
-                </>
-              )}
-</div>
-          )}
-        </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
+      </div>
 
-        {settings.showLogo && (
+      {settings.showLogo && (
         <span
           className={`absolute top-4 right-5 ${theme.logoClass ?? theme.accentClass}`}
         >

@@ -46,16 +46,6 @@ const FAQ_ITEMS: FaqItem[] = [
   },
 ];
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: FAQ_ITEMS.map((faq) => ({
-    "@type": "Question",
-    name: faq.question,
-    acceptedAnswer: { "@type": "Answer", text: faq.answer },
-  })),
-};
-
 const COMPARISON_ROWS: {
   feature: string;
   framePosting: string | boolean;
@@ -157,11 +147,6 @@ export default function TweetpikAlternativePage() {
           </Link>
         </div>
       </section>
-
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
     </main>
   );
 }

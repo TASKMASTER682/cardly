@@ -44,31 +44,6 @@ const FAQ_ITEMS: FaqItem[] = [
   },
 ];
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: FAQ_ITEMS.map((faq) => ({
-    "@type": "Question",
-    name: faq.question,
-    acceptedAnswer: { "@type": "Answer", text: faq.answer },
-  })),
-};
-
-const softwareAppJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: "Frame Posting - LinkedIn Post to Image Converter",
-  operatingSystem: "All",
-  applicationCategory: "DeveloperApplication",
-  offers: {
-    "@type": "Offer",
-    price: "0",
-    priceCurrency: "USD",
-  },
-  description:
-    "Convert public LinkedIn post links into downloadable, beautiful social media image cards instantly.",
-};
-
 export default function LinkedinPostImageMakerPage() {
   return (
     <main>
@@ -209,15 +184,6 @@ export default function LinkedinPostImageMakerPage() {
           <FaqList items={FAQ_ITEMS} />
         </div>
       </section>
-
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
     </main>
   );
 }

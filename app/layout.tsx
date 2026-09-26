@@ -40,7 +40,6 @@ export const metadata: Metadata = {
       index: true,
       follow: true,
       "max-image-preview": "large",
-      "max-snippet": -1,
     },
   },
   openGraph: {
@@ -50,6 +49,14 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     locale: "en_US",
+    images: [
+      {
+        url: "/opengraph-image",
+        type: "image/png",
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -132,7 +139,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${fraunces.variable} ${manrope.variable}`} data-scroll-behavior="smooth">
+      <head>
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+      </head>
       <body className="font-sans antialiased bg-ink text-cloud">
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppJsonLd) }}
@@ -151,7 +165,7 @@ export default function RootLayout({
         />
         <Analytics />
         <SiteHeader />
-        {children}
+        <main id="main-content">{children}</main>
         <Footer />
       </body>
     </html>

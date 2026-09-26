@@ -29,6 +29,14 @@ function proxyUrl(url: string): string {
 }
 
 async function captureCard(node: HTMLDivElement): Promise<string> {
+  const ratio =
+    parseFloat(getComputedStyle(node).getPropertyValue("--card-ratio")) || 1;
+  const exportWidth = Math.round(Math.sqrt(540 * 540 * ratio));
+  const exportHeight = Math.max(
+    Math.round(exportWidth / ratio),
+    Math.ceil(node.offsetHeight)
+  );
+
   const images = Array.from(node.querySelectorAll("img"));
   const originals: { img: HTMLImageElement; src: string }[] = [];
 
@@ -48,44 +56,38 @@ async function captureCard(node: HTMLDivElement): Promise<string> {
         });
         img.src = dataUrl;
       } catch {
-        // If proxy fetch fails too, leave original — may still work
+        // If proxy fails, leave original — may still work
       }
     })
   );
 
-  const EXPORT_CLASS = "card-frame--export";
-  const hadExportClass = node.classList.contains(EXPORT_CLASS);
-  node.classList.add(EXPORT_CLASS);
+  const clone = node.cloneNode(true) as HTMLDivElement;
+  clone.style.position = "fixed";
+  clone.style.left = "0";
+  clone.style.top = "0";
+  clone.style.width = `${exportWidth}px`;
+  clone.style.height = `${exportHeight}px`;
+  clone.style.maxWidth = "none";
+  clone.style.aspectRatio = "auto";
+  clone.style.overflow = "visible";
+  clone.style.visibility = "visible";
+  clone.style.opacity = "1";
+  clone.style.pointerEvents = "none";
+  clone.style.zIndex = "2147483647";
+  clone.style.transform = "translateX(-9999px)";
+  clone.style.transformOrigin = "top left";
+  document.body.appendChild(clone);
 
-  // Export exactly the selected aspect ratio. The layout may have been
-  // scaled-down by `max-width: 100%` on small screens, so the size comes
-  // from the inline design width, not the (possibly shrunk) rendered box.
-  const ratio =
-    parseFloat(
-      getComputedStyle(node).getPropertyValue("--card-ratio")
-    ) || 1;
-  const designWidth = Math.round(Math.sqrt(540 * 540 * ratio));
-  const minHeight = Math.ceil(designWidth / ratio);
-
-  const savedStyles = {
-    width: node.style.width,
-    maxWidth: node.style.maxWidth,
-    height: node.style.height,
-    aspectRatio: node.style.aspectRatio,
-  };
-
-  node.style.width = `${designWidth}px`;
-  node.style.maxWidth = "none";
-  node.style.aspectRatio = "auto";
-  node.style.height = "auto";
-  // The min-height (aspect ratio) stays in place, so the exported height is
-  // the natural height: at least the selected ratio, taller if content needs.
-  const naturalHeight = Math.ceil(node.offsetHeight);
-  const exportHeight = Math.max(minHeight, naturalHeight);
-  node.style.height = `${exportHeight}px`;
+  await new Promise<void>((resolve) => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => resolve());
+    });
+  });
 
   try {
-    return await toPng(node, {
+    return await toPng(clone, {
+      width: exportWidth,
+      height: exportHeight,
       quality: 1,
       pixelRatio: 2,
       cacheBust: true,
@@ -100,13 +102,7 @@ async function captureCard(node: HTMLDivElement): Promise<string> {
       },
     });
   } finally {
-    if (!hadExportClass) {
-      node.classList.remove(EXPORT_CLASS);
-    }
-    node.style.width = savedStyles.width;
-    node.style.maxWidth = savedStyles.maxWidth;
-    node.style.height = savedStyles.height;
-    node.style.aspectRatio = savedStyles.aspectRatio;
+    clone.remove();
     for (const { img, src } of originals) {
       img.src = src;
     }

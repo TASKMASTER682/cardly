@@ -2,6 +2,10 @@ import Link from "next/link";
 
 const PAGE_LINKS = [
   { href: "/", label: "Tweet to image generator" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+  { href: "/privacy", label: "Privacy" },
+  { href: "/terms", label: "Terms" },
   { href: "/tweetpik-alternative", label: "Free TweetPik alternative" },
   { href: "/alternatives", label: "Free tweet-to-image tools" },
   { href: "/linkedin-post-image-maker", label: "LinkedIn post image maker" },

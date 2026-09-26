@@ -17,6 +17,13 @@ export const metadata: Metadata = {
       "Compare the best free tweet-to-image and social card generators — TweetsPic, TweetPik, Pikaso, and Frame Posting — plus free LinkedIn post to image converters.",
     images: [OG_IMAGE],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Best Free Tweet-to-Image & LinkedIn-to-Image Tools & Alternatives | Frame Posting",
+    description:
+      "Compare the best free tweet-to-image and social card generators — TweetsPic, TweetPik, Pikaso, and Frame Posting — plus free LinkedIn post to image converters.",
+    images: [OG_IMAGE],
+  },
 };
 
 const TWEET_COMPETITORS = [

@@ -1,4 +1,21 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { OG_IMAGE } from "@/lib/og";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://frameposting.com";
+
+export const metadata: Metadata = {
+  title: "Page Not Found — Frame Posting",
+  description: "The page you're looking for doesn't exist. Return to the free tweet to image generator.",
+  alternates: { canonical: "/404" },
+  openGraph: {
+    type: "website",
+    url: `${SITE_URL}/404`,
+    title: "Page Not Found — Frame Posting",
+    description: "The page you're looking for doesn't exist.",
+    images: [OG_IMAGE],
+  },
+};
 
 export default function NotFound() {
   return (
