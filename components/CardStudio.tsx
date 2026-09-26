@@ -119,7 +119,7 @@ export default function CardStudio({ platform = "twitter" }: CardStudioProps) {
               <PreviewCard tweet={tweet} settings={settings} platform={platform} />
             </div>
           </div>
-          <p className="block lg:hidden text-center text-xs text-cloud-muted px-4 py-2">
+          <p className="text-center text-xs text-cloud-muted px-4 py-2">
             This preview is just to see how the theme looks — it is not an aspect ratio preview.
             The image you download will always be in whichever aspect ratio you have set above.
           </p>
