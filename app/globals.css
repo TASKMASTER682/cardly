@@ -149,6 +149,11 @@ input[type="range"]::-moz-range-thumb {
 .preview-card {
   border-radius: var(--card-border-radius, 28px);
   box-shadow: var(--card-shadow, none);
+  overflow: hidden;
+}
+
+.preview-card > div {
+  min-width: 0;
 }
 
 .preview-author-name {
@@ -161,6 +166,7 @@ input[type="range"]::-moz-range-thumb {
 
 .preview-body-copy {
   font-size: var(--card-font-size, 18px);
+  overflow-wrap: anywhere;
 }
 
 .card-frame {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import InputSection from "./InputSection";
 import CustomizationPanel from "./CustomizationPanel";
 import PreviewCard from "./PreviewCard";
@@ -83,6 +83,20 @@ export default function CardStudio({ platform = "twitter" }: CardStudioProps) {
     setSettings((prev) => ({ ...prev, ...patch }));
   };
 
+  // Preload images so they're cached when export captures the card
+  useEffect(() => {
+    if (settings.showImage && settings.imageUrl?.startsWith("http")) {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.src = settings.imageUrl;
+    }
+    if (tweet.avatarUrl?.startsWith("http")) {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.src = tweet.avatarUrl;
+    }
+  }, [settings.imageUrl, settings.showImage, tweet.avatarUrl]);
+
   return (
     <section
       aria-label="Tweet to image editor"
@@ -125,10 +139,12 @@ export default function CardStudio({ platform = "twitter" }: CardStudioProps) {
           </p>
           <div className="mx-auto w-full max-w-[440px] shrink-0">
             <ActionButtons
-              cardRef={cardRef}
               cardType={sourceType}
               themeUsed={settings.themeId}
               tweetUrl={sourceType === "url" ? urlValue : undefined}
+              settings={settings}
+              tweet={tweet}
+              platform={platform}
             />
           </div>
         </div>
